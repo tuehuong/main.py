@@ -3,21 +3,20 @@ name: Build EXE Complete
 on:
   push:
     branches: [ "main" ]
-  workflow_dispatch: # Thêm nút bấm chạy thủ công trên giao diện GitHub
+  workflow_dispatch:
 
 jobs:
   build:
-    runs-on: windows-2022  # Chỉ định rõ phiên bản Windows ổn định
+    runs-on: windows-latest
 
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v5 # Cập nhật action setup mới nhất
+      uses: actions/setup-python@v5
       with:
         python-version: '3.10'
-        cache: 'pip' # Tự động cache tăng tốc độ build
 
     - name: Install Dependencies
       run: |
@@ -27,11 +26,10 @@ jobs:
 
     - name: Build Binary (EXE)
       run: |
-        # Chạy PyInstaller dưới dạng module để tránh lỗi lệnh không tìm thấy
         python -m PyInstaller --noconfirm --onefile --windowed main.py
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
         name: Tool_Tu_Dong_Hoa_Windows
-        path: dist/main.exe # Trỏ thẳng vào 1 file duy nhất cho tiện sử dụng
+        path: dist/main.exe
